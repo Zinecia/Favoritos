@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>Favoritos</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <style>
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="bg-black text-white font-sans min-h-screen flex flex-col justify-between">
+
+  <!-- Encabezado -->
+  <header class="p-4">
+    <div class="bg-[#1a1a1a] rounded-xl flex items-center justify-between px-5 py-3">
+      <h1 class="font-extrabold text-lg">Favoritos</h1>
+      <button aria-label="Buscar" class="text-white text-xl">
+        <i class="fas fa-search"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Contenido principal -->
+  <main class="px-4 flex-1">
+    <section class="mb-4">
+      <div class="flex justify-between items-center mb-2">
+        <h2 class="font-bold text-sm">Películas Favoritas</h2>
+        
+      </div>
+
+      <!-- Contenedor de favoritos -->
+      <div id="favoritosContainer" class="flex gap-3 overflow-x-auto no-scrollbar pb-2">
+        <!-- Aquí se agregarán los pósteres dinámicamente -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Navegación inferior -->
+  <nav class="bg-[#1a1a1a] border-t border-t-gray-800 flex justify-around py-2 text-gray-400 text-xs">
+    <a href="https://cuentaappcreator.github.io/Home/" class="flex flex-col items-center gap-1">
+      <i class="fas fa-home text-lg"></i><span>Inicio</span>
+    </a>
+    <a href="https://cuentaappcreator.github.io/streaming/" class="flex flex-col items-center gap-1">
+      <i class="fas fa-film text-lg"></i><span>Streaming</span>
+    </a>
+    
+    <a href="#" class="flex flex-col items-center gap-1">
+      <i class="fas fa-film text-lg"></i><span>Series</span>
+    </a>
+    <a href="https://cuentaappcreator.github.io/Label-Favoritos/" class="flex flex-col items-center gap-1 text-red-600">
+      <i class="fas fa-heart text-lg"></i><span>Favoritos</span>
+    </a>
+  </nav>
+
+  <!-- Script para cargar favoritos (se agregará después) -->
+<script>
+  const container = document.getElementById('favoritosContainer');
+
+  // Carga los favoritos guardados
+  function cargarFavoritos() {
+    container.innerHTML = ''; // Limpiar por si ya hay algo
+
+    // Recorre todos los items del localStorage
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+
+      // Solo procesar los que empiecen con "fav-"
+      if (key.startsWith('fav-')) {
+        try {
+          const fav = JSON.parse(localStorage.getItem(key));
+
+          // Crear tarjeta
+          const div = document.createElement('div');
+          div.className = 'min-w-[100px] flex-shrink-0';
+          div.innerHTML = `
+            <a href="video.html?id=${fav.id}">
+              <img src="${fav.poster}" alt="${fav.title}" class="rounded-md w-[130px] h-[180px] object-cover mb-1">
+              <div class="text-xs text-center text-gray-300 font-medium truncate w-[140px]">${fav.title}</div>
+            </a>
+          `;
+
+          container.appendChild(div);
+        } catch (error) {
+          console.error('Error leyendo favorito:', key, error);
+        }
+      }
+    }
+
+    // Si no hay favoritos
+    if (container.children.length === 0) {
+      container.innerHTML = `<p class="text-gray-500 text-sm">Aún no tienes películas favoritas.</p>`;
+    }
+  }
+
+  // Ejecutar al cargar
+  cargarFavoritos();
+</script>
+
+</body>
+</html>

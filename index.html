@@ -76,7 +76,7 @@
           const div = document.createElement('div');
           div.className = 'min-w-[100px] flex-shrink-0';
           div.innerHTML = `
-            <a href="video.html?id=${fav.id}">
+            <a href="${fav.url}">
               <img src="${fav.poster}" alt="${fav.title}" class="rounded-md w-[130px] h-[180px] object-cover mb-1">
               <div class="text-xs text-center text-gray-300 font-medium truncate w-[140px]">${fav.title}</div>
             </a>
